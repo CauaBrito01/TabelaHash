@@ -64,12 +64,15 @@ public class HashEncadeamento {
 
     // Método para calcular o tempo de busca de um aluno na tabela hash com encadeamento.
     public long buscarTempo(int ra) {
-        long startTime = System.currentTimeMillis();  // Registra o tempo de início.
-        ArrayList<Aluno> alunosEncontrados = buscar(ra);  // Realiza a busca.
-        long endTime = System.currentTimeMillis();  // Registra o tempo de término.
-        if (!alunosEncontrados.isEmpty()) {
-            return endTime - startTime;  // Retorna o tempo de busca se o aluno for encontrado.
+        long startTime = System.nanoTime();
+        ArrayList<Aluno> alunosEncontrados = buscar(ra);
+        long endTime = System.nanoTime();
+        for (Aluno aluno : alunosEncontrados) {
+            if (aluno.getRa() == ra) {
+                return endTime - startTime; // Tempo em nanossegundos
+            }
         }
-        return -1;  // Retorna -1 se o aluno não for encontrado.
+        return -1;
     }
+
 }
