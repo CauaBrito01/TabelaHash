@@ -1,6 +1,5 @@
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,7 +15,7 @@ public class Main {
         HashEncadeamento alunohashEncadeamento = new HashEncadeamento(tamVetor, max);
 
         int opcao;
-        long numeroBuscas; // Alteração no tipo de dado para long
+        long numeroBuscas;
 
         do {
             System.out.println("Digite 0 para sair do programa!");
@@ -25,6 +24,7 @@ public class Main {
             System.out.println("Digite 3 para buscar um aluno na Hash!");
             System.out.println("Digite 4 para imprimir a Hash com Sondagem Linear!");
             System.out.println("Digite 5 para imprimir a Hash com Encadeamento!");
+            System.out.println("Digite 6 para realizar um teste de eficiência na busca!");
 
             opcao = scanner.nextInt();
             int ra;
@@ -44,13 +44,19 @@ public class Main {
                 case 2:
                     System.out.println("Digite o RA do aluno a ser removido:");
                     ra = scanner.nextInt();
-                    aluno = new Aluno(ra, "");
-                    boolean removidoSondagemLinear = alunohashSondagemLinear.deletar(aluno);
-                    boolean removidoEncadeamento = alunohashEncadeamento.deletar(aluno);
-                    if (removidoSondagemLinear || removidoEncadeamento) {
-                        System.out.println("Aluno removido com sucesso!");
+                    Aluno alunoRemovidoSondagemLinear = alunohashSondagemLinear.deletar(ra);
+                    Aluno alunoRemovidoEncadeamento = alunohashEncadeamento.deletar(ra);
+                    if (alunoRemovidoSondagemLinear != null) {
+                        System.out.println("Aluno removido com sucesso (Sondagem Linear): RA " +
+                                alunoRemovidoSondagemLinear.getRa() + ", Nome " + alunoRemovidoSondagemLinear.getNome());
                     } else {
-                        System.out.println("Aluno não encontrado na Hash!");
+                        System.out.println("Aluno não encontrado na Hash (Sondagem Linear)!");
+                    }
+                    if (alunoRemovidoEncadeamento != null) {
+                        System.out.println("Aluno removido com sucesso (Encadeamento): RA " +
+                                alunoRemovidoEncadeamento.getRa() + ", Nome " + alunoRemovidoEncadeamento.getNome());
+                    } else {
+                        System.out.println("Aluno não encontrado na Hash (Encadeamento)!");
                     }
                     break;
                 case 3:
@@ -68,6 +74,25 @@ public class Main {
                 case 5:
                     System.out.println("Tabela Hash com Encadeamento:");
                     alunohashEncadeamento.imprimir();
+                    break;
+                case 6:
+                    System.out.println("Digite o RA do aluno para o teste de eficiência:");
+                    ra = scanner.nextInt();
+
+                    long tempoSondagemLinear = alunohashSondagemLinear.buscarTempo(ra);
+                    long tempoEncadeamento = alunohashEncadeamento.buscarTempo(ra);
+
+                    if (tempoSondagemLinear != -1) {
+                        System.out.println("Tempo de busca com Sondagem Linear: " + tempoSondagemLinear + "ms");
+                    } else {
+                        System.out.println("Aluno não encontrado com Sondagem Linear.");
+                    }
+
+                    if (tempoEncadeamento != -1) {
+                        System.out.println("Tempo de busca com Encadeamento: " + tempoEncadeamento + "ms");
+                    } else {
+                        System.out.println("Aluno não encontrado com Encadeamento.");
+                    }
                     break;
                 case 0:
                     System.out.println("Saindo do programa. Até logo!");
@@ -90,5 +115,4 @@ public class Main {
             }
         }
     }
-
 }

@@ -24,25 +24,27 @@ public class HashSondagemLinear {
         quantItens++;
     }
 
-    public boolean deletar(Aluno aluno) {
-        int local = aluno.getRa() % this.maxPosicoes;
+    public Aluno deletar(int ra) {
+        int local = ra % this.maxPosicoes;
         int tentativas = 0;
         while (tentativas < this.maxPosicoes) {
             if (!estrutura[local].estaVazia()) {
                 ArrayList<Aluno> alunosNaPosicao = estrutura[local].getAlunos();
                 for (int i = 0; i < alunosNaPosicao.size(); i++) {
-                    if (alunosNaPosicao.get(i).getRa() == aluno.getRa()) {
-                        estrutura[local].removerAluno(alunosNaPosicao.get(i));
+                    if (alunosNaPosicao.get(i).getRa() == ra) {
+                        Aluno alunoRemovido = alunosNaPosicao.get(i);
+                        estrutura[local].removerAluno(alunoRemovido);
                         quantItens--;
-                        return true;
+                        return alunoRemovido;
                     }
                 }
             }
             local = (local + 1) % this.maxPosicoes;
             tentativas++;
         }
-        return false;
+        return null;
     }
+
 
 
     public ArrayList<Aluno> buscar(int ra) {
@@ -71,5 +73,14 @@ public class HashSondagemLinear {
                 System.out.println("Posição " + i + ": Vazia");
             }
         }
+    }
+    public long buscarTempo(int ra) {
+        long startTime = System.currentTimeMillis();
+        ArrayList<Aluno> alunosEncontrados = buscar(ra);
+        long endTime = System.currentTimeMillis();
+        if (!alunosEncontrados.isEmpty()) {
+            return endTime - startTime;
+        }
+        return -1;
     }
 }
